@@ -7,11 +7,12 @@
         <methods>
           <include name="validation"/>
           <include name="browserLaunch"/>
+          <include name="search"/>
           <include name="login"/>
-          <include name="browserQuit"/>
           <include name="windows"/>
-          <include name="startTime"/>
+          <include name="browserQuit"/>
           <include name="mobile"/>
+          <include name="startTime"/>
           <include name="endTime"/>
         </methods>
       </class> <!-- Testing.MobilePurchase -->

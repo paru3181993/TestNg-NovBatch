@@ -10,23 +10,29 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
+import org.testng.annotations.DataProvider;
 import java.sql.Driver;
 import java.time.Duration;
 import io.github.bonigarcia.wdm.WebDriverManager;
-
-
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Optional;
 public class MobilePurchase {
-	   public static WebDriver driver;
+	@DataProvider(name="mobile")
+	public Object[][] mobileName(){
+		return new Object[][] {{"realme"}};
+	}
+	
+	    static WebDriver driver;
+	    static long start;
 	
 @BeforeClass(groups="default")
 public static void browserLaunch() {
 	System.out.println("browserLaunch");
 	WebDriverManager.edgedriver().setup();
 	WebDriver driver=new EdgeDriver();
-	driver.get("https://www.flipkart.com/");
-	driver.manage().window().maximize();
-	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	//driver.get("https://www.flipkart.com/");
+	//driver.manage().window().maximize();
+	//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 }
 @AfterClass(groups="default")
 public static void browserQuit() {
@@ -42,17 +48,22 @@ public void endTime() {
 	long end=System.currentTimeMillis();
 	System.out.println("After totaltime"+(end));
 }
+@Parameters("url")
 @Test(priority=1)
 
-public void login() {
+public void login(@Optional("https://www.flipkart.com/") String url) {
 	System.out.println("method1");
-	
-	WebElement searchBox = driver.findElement(By.name("q"));
-			searchBox.sendKeys("realme",Keys.ENTER);
+	driver.get(url);
+	driver.manage().window().maximize();
+	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+	//WebElement searchBox = driver.findElement(By.name("q"));
+			//searchBox.sendKeys("realme",Keys.ENTER);
 }
-@Test(priority=2,enabled=false)
-public  void search() {
+@Test(priority=2,dataProvider="mobile")
+public  void search(String name) {
+
 	System.out.println("method2");
+	driver.findElement(By.xpath("//input[@ type-'text']")).sendKeys(name,Keys.ENTER);	
 }
 @Test(priority=3,invocationCount=2)
 public  void mobile() {
